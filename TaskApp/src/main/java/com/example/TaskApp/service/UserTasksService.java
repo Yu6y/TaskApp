@@ -1,11 +1,14 @@
 package com.example.TaskApp.service;
 
+import com.example.TaskApp.model.User;
 import com.example.TaskApp.model.UserTaskId;
 import com.example.TaskApp.model.UserTasks;
+import com.example.TaskApp.repository.UserRepository;
 import com.example.TaskApp.repository.UserTasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +16,8 @@ public class UserTasksService {
 
     @Autowired
     private UserTasksRepository userTasksRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<UserTasks> getAllUserTasks() {
         return userTasksRepository.findAll();
@@ -41,4 +46,8 @@ public class UserTasksService {
         }
     }
 
+    public List<UserTasks> getUserTaskByUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+        return userTasksRepository.findAllByUser(user);
+    }
 }

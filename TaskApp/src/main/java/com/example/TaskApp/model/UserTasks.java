@@ -30,8 +30,8 @@ public class UserTasks {
     @Column(name = "assigned_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime assignedAt;
 
-    public UserTasks(UserTaskId userTaskId, User user, Tasks tasks, LocalDateTime assignedAt){
-        this.id = new UserTaskId(user.getUserId(), tasks.getTaskId());
+    public UserTasks(UserTaskId id, User user, Tasks tasks, LocalDateTime assignedAt){
+        this.id = id;
         this.user = user;
         this.tasks = tasks;
         this.assignedAt = assignedAt;

@@ -21,6 +21,10 @@ public class UserTasksController {
     public ResponseEntity<?> getUserTasks() {
         return new ResponseEntity<>(userTasksService.getAllUserTasks(), HttpStatus.OK);
     }
+    @GetMapping("/getUserTasks/{id}")
+    public ResponseEntity<?> getUserTasks(@PathVariable Long id) {
+        return new ResponseEntity<>(userTasksService.getUserTaskByUser(id), HttpStatus.OK);
+    }
 
     @GetMapping("/{userId}/{taskId}")
     public ResponseEntity<?> getUserTaskById(@PathVariable Long userId, @PathVariable Long taskId) {
