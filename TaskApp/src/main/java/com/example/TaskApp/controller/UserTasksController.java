@@ -38,7 +38,7 @@ public class UserTasksController {
         }
     }
 
-    @DeleteMapping("/deleteUserTask/{userId}/{taskId}")
+    @DeleteMapping("/deleteUserTask/{id}")
     public ResponseEntity<?> deleteUserTask(@PathVariable Long id) {
         HashMap<String, Object> response = new HashMap<>();
 

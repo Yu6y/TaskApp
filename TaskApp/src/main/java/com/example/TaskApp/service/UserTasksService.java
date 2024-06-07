@@ -28,13 +28,14 @@
 
 
         public UserTasks addUserTask(UserTasks userTask) {
+
             if(userRepository.findById(userTask.getUser().getUserId()).isEmpty())
-                throw new RuntimeException("User task already exists!");
-            if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty())
-                taskService.addTask(userTask.getTasks());
-            if (userTasksRepository.findByUserAndTasks(userTask.getUser(), userTask.getTasks()).isPresent()) {
+                throw new RuntimeException("User not found!");
+            if (userTasksRepository.findById(userTask.getId()).isPresent()) {
                 throw new RuntimeException("User task already exists!");
             } else {
+                if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty())
+                    taskService.addTask(userTask.getTasks());
                 userTasksRepository.save(userTask);
                 return userTask;
             }
