@@ -1,6 +1,5 @@
 package com.example.TaskApp.controller;
 
-import com.example.TaskApp.model.UserTaskId;
 import com.example.TaskApp.model.UserTasks;
 import com.example.TaskApp.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +25,6 @@ public class UserTasksController {
         return new ResponseEntity<>(userTasksService.getUserTaskByUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/{taskId}")
-    public ResponseEntity<?> getUserTaskById(@PathVariable Long userId, @PathVariable Long taskId) {
-        HashMap<String, Object> response = new HashMap<>();
-        UserTaskId id = new UserTaskId(userId, taskId);
-        try {
-            response.put("userTask", userTasksService.getUserTaskById(id));
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-        }
-    }
 
     @PostMapping("/addUserTask")
     public ResponseEntity<?> addUserTask(@RequestBody UserTasks userTask) {
@@ -52,11 +39,11 @@ public class UserTasksController {
     }
 
     @DeleteMapping("/deleteUserTask/{userId}/{taskId}")
-    public ResponseEntity<?> deleteUserTask(@PathVariable Long userId, @PathVariable Long taskId) {
+    public ResponseEntity<?> deleteUserTask(@PathVariable Long id) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {
-            response.put("success", userTasksService.deleteUserTask(userId, taskId));
+            response.put("success", userTasksService.deleteUserTask(id));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.put("error", e.getMessage());
