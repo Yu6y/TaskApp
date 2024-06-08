@@ -1,5 +1,6 @@
 package com.example.TaskApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,8 @@ public class User {
     private String username;
     private String email;
     private String passwordHash;
+
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @JsonIgnore
     private LocalDateTime createdAt;
 }

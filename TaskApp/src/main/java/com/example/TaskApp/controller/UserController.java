@@ -23,11 +23,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("user", userService.getUserById(id));
+            response.put("success", userService.getUserById(id));
             return new ResponseEntity<>(response , HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -35,11 +35,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/addUser/v1")
     public ResponseEntity<?> addProduct(@RequestBody User user){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("users", userService.addUser(user));
+            response.put("success", userService.addUser(user));
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -47,11 +47,11 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser")
+    @PutMapping("/updateUser/v1")
     public ResponseEntity<?> updateUser(@RequestBody User user){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("user", userService.updateUser(user));
+            response.put("success", userService.updateUser(user));
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/deleteUser/{id}")
+    @DeleteMapping("/deleteUser/v1/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{

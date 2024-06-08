@@ -5,6 +5,8 @@ import com.example.TaskApp.repository.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,12 +19,13 @@ public class TaskService {
         return tasksRepository.findAll();
     }
 
-    public Tasks addTask(Tasks task){
+    public String addTask(Tasks task){
         if(tasksRepository.findById(task.getTaskId()).isPresent())
             throw new RuntimeException("Task already exist!");
         else{
+            task.setCreatedAt(LocalDateTime.now());
             tasksRepository.save(task);
-            return task;
+            return "Task added successfully";
         }
     }
 
@@ -30,13 +33,13 @@ public class TaskService {
         return tasksRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found!"));
     }
 
-    public Tasks updateTask(Tasks task){
+    public String updateTask(Tasks task){
         Tasks taskUpdate = tasksRepository.findById(task.getTaskId()).orElseThrow(() -> new RuntimeException("Task not found!"));
         taskUpdate.setTitle(task.getTitle());
         taskUpdate.setDescription(task.getDescription());
         taskUpdate.setDueDate(task.getDueDate());
 
-        return tasksRepository.save(taskUpdate);
+        return "UserTask updated successfully";
     }
 
     public String deleteTask(Long id){
@@ -44,7 +47,7 @@ public class TaskService {
             throw new RuntimeException("Task not found!");
         else {
             tasksRepository.deleteById(id);
-            return "Deleted task with id:" + id;
+            return "Task deleted successfully";
         }
     }
 }

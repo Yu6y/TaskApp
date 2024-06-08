@@ -5,6 +5,7 @@ import com.example.TaskApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,12 +18,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User addUser(User user){
+    public String addUser(User user){
         if(userRepository.findById(user.getUserId()).isPresent())
             throw new RuntimeException("User already exist!");
         else{
+            user.setCreatedAt(LocalDateTime.now());
             userRepository.save(user);
-            return user;
+            return "User added successfully";
         }
     }
 
@@ -31,14 +33,14 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(User user){
+    public String updateUser(User user){
         User userUpdate = userRepository.findById(user.getUserId()).orElseThrow(() -> new RuntimeException("User not found!"));
         userUpdate.setUsername(user.getUsername());
         userUpdate.setEmail(user.getEmail());
         userUpdate.setPasswordHash(user.getPasswordHash());
 
         userRepository.save(userUpdate);
-        return userUpdate;
+        return "User updated successfully";
     }
 
     public String deleteUser(Long id){
@@ -46,7 +48,7 @@ public class UserService {
             throw new RuntimeException("User not found!");
         else {
             userRepository.deleteById(id);
-            return "Deleted user with id:" + id;
+            return "User deleted successfully";
         }
     }
 

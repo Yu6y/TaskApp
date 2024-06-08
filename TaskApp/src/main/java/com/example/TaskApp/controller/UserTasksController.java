@@ -20,17 +20,17 @@ public class UserTasksController {
     public ResponseEntity<?> getUserTasks() {
         return new ResponseEntity<>(userTasksService.getAllUserTasks(), HttpStatus.OK);
     }
-    @GetMapping("/getUserTasks/{id}")
+    @GetMapping("/getUserTasks/v1/{id}")
     public ResponseEntity<?> getUserTasks(@PathVariable Long id) {
         return new ResponseEntity<>(userTasksService.getUserTaskByUser(id), HttpStatus.OK);
     }
 
 
-    @PostMapping("/addUserTask")
+    @PostMapping("/addUserTask/v1")
     public ResponseEntity<?> addUserTask(@RequestBody UserTasks userTask) {
         HashMap<String, Object> response = new HashMap<>();
         try {
-            response.put("userTask", userTasksService.addUserTask(userTask));
+            response.put("success", userTasksService.addUserTask(userTask));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.put("error", e.getMessage());
@@ -38,7 +38,7 @@ public class UserTasksController {
         }
     }
 
-    @DeleteMapping("/deleteUserTask/{id}")
+    @DeleteMapping("/deleteUserTask/v1/{id}")
     public ResponseEntity<?> deleteUserTask(@PathVariable Long id) {
         HashMap<String, Object> response = new HashMap<>();
 

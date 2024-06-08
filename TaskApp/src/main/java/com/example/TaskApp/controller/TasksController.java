@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/task/v1")
 public class TasksController {
 
     @Autowired
@@ -21,11 +21,11 @@ public class TasksController {
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("task", taskService.getTaskById(id));
+            response.put("success", taskService.getTaskById(id));
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -33,11 +33,11 @@ public class TasksController {
         }
     }
 
-    @PostMapping("/addTask")
+    @PostMapping("/addTask/v1")
     public ResponseEntity<?> addTask(@RequestBody Tasks task){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("task", taskService.addTask(task));
+            response.put("success", taskService.addTask(task));
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -45,11 +45,11 @@ public class TasksController {
         }
     }
 
-    @PutMapping("/updateTask")
+    @PutMapping("/updateTask/v1")
     public ResponseEntity<?> updateTask(@RequestBody Tasks task){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("task", taskService.updateTask(task));
+            response.put("success", taskService.updateTask(task));
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
@@ -57,7 +57,7 @@ public class TasksController {
         }
     }
 
-    @DeleteMapping("/deleteTask/{id}")
+    @DeleteMapping("/deleteTask/v1/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{

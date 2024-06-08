@@ -1,5 +1,6 @@
     package com.example.TaskApp.service;
 
+    import com.example.TaskApp.model.Tasks;
     import com.example.TaskApp.model.User;
     import com.example.TaskApp.model.UserTasks;
     import com.example.TaskApp.repository.TasksRepository;
@@ -8,6 +9,8 @@
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
 
+    import java.time.LocalDateTime;
+    import java.util.ArrayList;
     import java.util.List;
 
     @Service
@@ -27,18 +30,22 @@
         }
 
 
-        public UserTasks addUserTask(UserTasks userTask) {
+        public String addUserTask(UserTasks userTask) {
 
             if(userRepository.findById(userTask.getUser().getUserId()).isEmpty())
                 throw new RuntimeException("User not found!");
-            if (userTasksRepository.findById(userTask.getId()).isPresent()) {
+            if (userTasksRepository.findByUserAndTasks(userTask.getUser(), userTask.getTasks()).isPresent()) {
                 throw new RuntimeException("User task already exists!");
-            } else {
-                if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty())
-                    taskService.addTask(userTask.getTasks());
-                userTasksRepository.save(userTask);
-                return userTask;
             }
+            if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty()) {
+                throw new RuntimeException("Task not found!");
+            }
+            if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty()){
+                taskService.addTask(userTask.getTasks());
+                userTask.setAssignedAt(LocalDateTime.now());
+                userTasksRepository.save(userTask);
+            }
+            return "UserTask added successfully";
         }
 
         public String deleteUserTask(Long userTaskId) {
@@ -47,12 +54,16 @@
                 throw new RuntimeException("User task not found!");
             } else {
                 userTasksRepository.deleteById(userTaskId);
-                return "Deleted UserTask with id: " + userTaskId;
+                return "Deleted successfully";
             }
         }
 
-        public List<UserTasks> getUserTaskByUser(Long id){
+        public List<Tasks> getUserTaskByUser(Long id){
             User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
-            return userTasksRepository.findAllByUser(user);
+            List<Tasks> list = new ArrayList<>();
+            for(UserTasks userTask : userTasksRepository.findAllByUser(user))
+                list.add(userTask.getTasks());
+
+            return list;
         }
     }

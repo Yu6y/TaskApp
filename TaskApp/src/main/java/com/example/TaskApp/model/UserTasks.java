@@ -27,6 +27,8 @@ public class UserTasks {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Tasks tasks;
+
+    @JsonIgnore
     @Column(name = "assigned_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime assignedAt;
 
