@@ -23,7 +23,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/v1/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -35,7 +35,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/addUser/v1")
+    @PostMapping("/addUser")
     public ResponseEntity<?> addProduct(@RequestBody User user){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -47,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser/v1")
+    @PutMapping("/updateUser")
     public ResponseEntity<?> updateUser(@RequestBody User user){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/deleteUser/v1/{id}")
+    @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{

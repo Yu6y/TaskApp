@@ -1,5 +1,8 @@
 package com.example.TaskApp.controller;
 
+import com.example.TaskApp.dto.UserTaskAddDto;
+import com.example.TaskApp.dto.UserTaskDeleteDto;
+import com.example.TaskApp.dto.UserTaskGetByIdDto;
 import com.example.TaskApp.model.UserTasks;
 import com.example.TaskApp.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +23,14 @@ public class UserTasksController {
     public ResponseEntity<?> getUserTasks() {
         return new ResponseEntity<>(userTasksService.getAllUserTasks(), HttpStatus.OK);
     }
-    @GetMapping("/getUserTasks/v1/{id}")
-    public ResponseEntity<?> getUserTasks(@PathVariable Long id) {
-        return new ResponseEntity<>(userTasksService.getUserTaskByUser(id), HttpStatus.OK);
+    @GetMapping("/getUserTasks/v1")
+    public ResponseEntity<?> getUserTasks(@RequestBody UserTaskGetByIdDto userTask) {
+        return new ResponseEntity<>(userTasksService.getUserTaskByUser(userTask), HttpStatus.OK);
     }
 
 
     @PostMapping("/addUserTask/v1")
-    public ResponseEntity<?> addUserTask(@RequestBody UserTasks userTask) {
+    public ResponseEntity<?> addUserTask(@RequestBody UserTaskAddDto userTask) {
         HashMap<String, Object> response = new HashMap<>();
         try {
             response.put("success", userTasksService.addUserTask(userTask));
@@ -38,12 +41,12 @@ public class UserTasksController {
         }
     }
 
-    @DeleteMapping("/deleteUserTask/v1/{id}")
-    public ResponseEntity<?> deleteUserTask(@PathVariable Long id) {
+    @DeleteMapping("/deleteUserTask/v1")
+    public ResponseEntity<?> deleteUserTask(@RequestBody UserTaskDeleteDto userTaskDeleteDto) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {
-            response.put("success", userTasksService.deleteUserTask(id));
+            response.put("success", userTasksService.deleteUserTask(userTaskDeleteDto));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.put("error", e.getMessage());

@@ -1,5 +1,8 @@
     package com.example.TaskApp.service;
 
+    import com.example.TaskApp.dto.UserTaskAddDto;
+    import com.example.TaskApp.dto.UserTaskDeleteDto;
+    import com.example.TaskApp.dto.UserTaskGetByIdDto;
     import com.example.TaskApp.model.Tasks;
     import com.example.TaskApp.model.User;
     import com.example.TaskApp.model.UserTasks;
@@ -30,36 +33,47 @@
         }
 
 
-        public String addUserTask(UserTasks userTask) {
+        public String addUserTask(UserTaskAddDto userTask) {
+            User user = userRepository.findById(userTask.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found!"));
 
-            if(userRepository.findById(userTask.getUser().getUserId()).isEmpty())
-                throw new RuntimeException("User not found!");
-            if (userTasksRepository.findByUserAndTasks(userTask.getUser(), userTask.getTasks()).isPresent()) {
+            Tasks task = userTask.getTask();
+
+            // Sprawdź, czy zadanie istnieje, jeśli nie, zapisz je najpierw
+            if (!tasksRepository.existsById(task.getTaskId())) {
+                taskService.addTask(task);
+            }
+
+            // Pobierz zadanie z repozytorium, aby upewnić się, że jest zapisane
+            task = taskService.getTaskById(task.getTaskId());
+
+            // Sprawdź, czy relacja między użytkownikiem a zadaniem już istnieje
+            if (userTasksRepository.findByUserAndTasks(user, task).isPresent()) {
                 throw new RuntimeException("User task already exists!");
             }
-            if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty()) {
-                throw new RuntimeException("Task not found!");
-            }
-            if(tasksRepository.findById(userTask.getTasks().getTaskId()).isEmpty()){
-                taskService.addTask(userTask.getTasks());
-                userTask.setAssignedAt(LocalDateTime.now());
-                userTasksRepository.save(userTask);
-            }
+
+            UserTasks userTaskAdd = new UserTasks();
+            userTaskAdd.setUser(user);
+            userTaskAdd.setId((long)1);
+            userTaskAdd.setTasks(task);
+            userTaskAdd.setAssignedAt(LocalDateTime.now());
+
+            userTasksRepository.save(userTaskAdd);
+
             return "UserTask added successfully";
         }
 
-        public String deleteUserTask(Long userTaskId) {
+        public String deleteUserTask(UserTaskDeleteDto userTask) {
+            User user = userRepository.findById(userTask.getUserId()).orElseThrow(() -> new RuntimeException("User not found!"));
+            Tasks task = tasksRepository.findById(userTask.getTaskId()).orElseThrow(() -> new RuntimeException("Task not found!"));
+            UserTasks userTaskToDelete = userTasksRepository.findByUserAndTasks(user, task).orElseThrow(() -> new RuntimeException("User task not found!"));
 
-            if (!userTasksRepository.existsById(userTaskId)) {
-                throw new RuntimeException("User task not found!");
-            } else {
-                userTasksRepository.deleteById(userTaskId);
+            userTasksRepository.deleteById(userTaskToDelete.getId());
                 return "Deleted successfully";
-            }
         }
 
-        public List<Tasks> getUserTaskByUser(Long id){
-            User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+        public List<Tasks> getUserTaskByUser(UserTaskGetByIdDto userTaskDto){
+            User user = userRepository.findById(userTaskDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found!"));
             List<Tasks> list = new ArrayList<>();
             for(UserTasks userTask : userTasksRepository.findAllByUser(user))
                 list.add(userTask.getTasks());

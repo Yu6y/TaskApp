@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/task/v1")
+@RequestMapping("/api/task")
 public class TasksController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class TasksController {
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 
-    @GetMapping("/v1/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -33,7 +33,7 @@ public class TasksController {
         }
     }
 
-    @PostMapping("/addTask/v1")
+    @PostMapping("/addTask")
     public ResponseEntity<?> addTask(@RequestBody Tasks task){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -45,7 +45,7 @@ public class TasksController {
         }
     }
 
-    @PutMapping("/updateTask/v1")
+    @PutMapping("/updateTask")
     public ResponseEntity<?> updateTask(@RequestBody Tasks task){
         HashMap<String, Object> response = new HashMap<>();
         try{
@@ -57,7 +57,7 @@ public class TasksController {
         }
     }
 
-    @DeleteMapping("/deleteTask/v1/{id}")
+    @DeleteMapping("/deleteTask/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id){
         HashMap<String, Object> response = new HashMap<>();
         try{
