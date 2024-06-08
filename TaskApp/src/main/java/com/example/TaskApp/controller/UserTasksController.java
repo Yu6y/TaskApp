@@ -1,11 +1,10 @@
 package com.example.TaskApp.controller;
 
-import com.example.TaskApp.dto.UserTaskAddDto;
-import com.example.TaskApp.dto.UserTaskDeleteDto;
-import com.example.TaskApp.dto.UserTaskGetByIdDto;
+import com.example.TaskApp.dto.*;
 import com.example.TaskApp.model.UserTasks;
 import com.example.TaskApp.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +46,36 @@ public class UserTasksController {
 
         try {
             response.put("success", userTasksService.deleteUserTask(userTaskDeleteDto));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/getUserTasks/v2/{id}")
+    public ResponseEntity<?> getUserTasks(@PathVariable Long id) {
+        return new ResponseEntity<>(userTasksService.getUserTaskByUser(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/addUserTask/v2/{id}")
+    public ResponseEntity<?> addUserTask(@PathVariable Long id, @RequestBody UserTaskAddDtoV2 userTask) {
+        HashMap<String, Object> response = new HashMap<>();
+        try {
+            response.put("success", userTasksService.addUserTask(id, userTask));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+    }
+
+    @DeleteMapping("/deleteUserTask/v2/{id}")
+    public ResponseEntity<?> deleteUserTask(@PathVariable Long id, @RequestBody UserTaskDeleteDtoV2 userTaskDeleteDto) {
+        HashMap<String, Object> response = new HashMap<>();
+
+        try {
+            response.put("success", userTasksService.deleteUserTask(id, userTaskDeleteDto));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.put("error", e.getMessage());

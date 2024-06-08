@@ -27,4 +27,10 @@ public class Tasks {
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @JsonIgnore
     private LocalDateTime createdAt;
+
+    public Tasks(Long id, String title, String description){
+        taskId = id;
+        this.title = title;
+        this.description = description;
+    }
 }
