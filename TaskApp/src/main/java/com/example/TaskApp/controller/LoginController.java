@@ -18,7 +18,7 @@ public class LoginController {
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("success", loginService.loginUser(loginDto));
+            response = loginService.loginUser(loginDto);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());

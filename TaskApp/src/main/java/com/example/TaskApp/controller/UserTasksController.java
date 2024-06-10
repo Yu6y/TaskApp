@@ -1,10 +1,8 @@
 package com.example.TaskApp.controller;
 
 import com.example.TaskApp.dto.*;
-import com.example.TaskApp.model.UserTasks;
 import com.example.TaskApp.service.UserTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

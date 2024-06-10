@@ -19,7 +19,6 @@ public class User {
     @Id
     private Long userId;
     private String username;
-    private String email;
     private String passwordHash;
 
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
