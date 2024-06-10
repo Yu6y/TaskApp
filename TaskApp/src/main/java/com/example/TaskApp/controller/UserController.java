@@ -1,5 +1,6 @@
 package com.example.TaskApp.controller;
 
+import com.example.TaskApp.dto.UserDeleteDto;
 import com.example.TaskApp.model.User;
 import com.example.TaskApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,17 @@ public class UserController {
         HashMap<String, Object> response = new HashMap<>();
         try{
             response.put("success", userService.deleteUser(id));
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }catch(Exception e){
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+    }
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody UserDeleteDto userDeleteDto){
+        HashMap<String, Object> response = new HashMap<>();
+        try{
+            response.put("success", userService.deleteUser(userDeleteDto));
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }catch(Exception e){
             response.put("error", e.getMessage());

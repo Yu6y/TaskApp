@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name="users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long userId;
     private String username;
     private String passwordHash;

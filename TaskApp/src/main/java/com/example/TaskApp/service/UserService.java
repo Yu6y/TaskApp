@@ -1,5 +1,6 @@
 package com.example.TaskApp.service;
 
+import com.example.TaskApp.dto.UserDeleteDto;
 import com.example.TaskApp.model.User;
 import com.example.TaskApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class UserService {
             throw new RuntimeException("User already exist!");
         else{
             user.setCreatedAt(LocalDateTime.now());
+            user.setUserId((long)1);
             userRepository.save(user);
             return "User added successfully";
         }
@@ -47,6 +49,14 @@ public class UserService {
             throw new RuntimeException("User not found!");
         else {
             userRepository.deleteById(id);
+            return "User deleted successfully";
+        }
+    }
+    public String deleteUser(UserDeleteDto userDeleteDto){
+        if(userRepository.findById(userDeleteDto.getUserId()).isEmpty())
+            throw new RuntimeException("User not found!");
+        else {
+            userRepository.deleteById(userDeleteDto.getUserId());
             return "User deleted successfully";
         }
     }

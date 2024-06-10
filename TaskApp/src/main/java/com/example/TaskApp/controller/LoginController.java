@@ -25,4 +25,17 @@ public class LoginController {
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody LoginDto loginDto){
+        HashMap<String, Object> response = new HashMap<>();
+        try{
+            response.put("success", loginService.registerUser(loginDto));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e){
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+    }
+
 }
