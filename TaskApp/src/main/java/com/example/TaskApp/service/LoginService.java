@@ -30,7 +30,7 @@ public class LoginService {
            throw new RuntimeException("Credentials incorrect!");
    }
 
-   public String registerUser(LoginDto loginDto){
+   public HashMap<String, Object> registerUser(LoginDto loginDto){
 
        Optional<User> user = userRepository.findByUsername(loginDto.getLogin());
        if(user.isEmpty()) {
@@ -41,7 +41,10 @@ public class LoginService {
            userAdd.setCreatedAt(LocalDateTime.now());
 
            userRepository.save(userAdd);
-           return "User registered successfully";
+           HashMap<String, Object> response = new HashMap<>();
+           response.put("userId", userAdd.getUserId());
+           response.put("login", userAdd.getUsername());
+           return response;
        }
        else
            throw new RuntimeException("User already exists!");

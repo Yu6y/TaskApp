@@ -30,7 +30,7 @@ public class LoginController {
     public ResponseEntity<?> registerUser(@RequestBody LoginDto loginDto){
         HashMap<String, Object> response = new HashMap<>();
         try{
-            response.put("success", loginService.registerUser(loginDto));
+            response = loginService.registerUser(loginDto);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e){
             response.put("error", e.getMessage());
